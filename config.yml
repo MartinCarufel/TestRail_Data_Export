@@ -15,17 +15,17 @@ Requirement: "002, 007, 031"
 #    the word doc should already tables created with one blank row.
 use CSV template: False
 #table mapping: {11476: 3}    # Ex: {11362: 2, 6369: 3, 9521: 4}
-table mapping: {11476: 3}
-testrail parent section id: 10769   # Use only for option Use CSV = True
+table mapping: {7742: 8}
+testrail parent section id: 7742   # Use only for option Use CSV = True
 
-test report: False          #True for test report False for test specification
-test report run id: 1568    # Enter the run id from test rail (Rxxxx)
+test report: True          #True for test report False for test specification
+test report run id: 1538    # Enter the run id from test rail (Rxxxx)
 
 # output doc name is path and file name where the document is created
-output doc name: D:\temp\filled doc2.docx
+output doc name: D:\user_data\Martin\OneDrive - Straumann Group\DHF\100 Verification & Validation\101 Verification\Hardware\IO HP3\CR-230117-IO-1 Handpiece BOM change C07 and C08\filled doc2.docx
 # template path: D:\user_data\Martin\OneDrive\Documents\git\PycharmProjects\wordDoc\QUF63-5448 Template CSV Validation Specifications (v1.2).docx
 # template path: QUF73-2485 Template Test Report (v1.0).docx
 
-template path: D:\temp\QUF73-2484 Template Test Specification (v1.3).docx
+template path: D:\user_data\Martin\OneDrive - Straumann Group\Template\QUF73-2485 Template Test Report (v1.0) (ID 3999).docx
 #template path: D:\temp\DEX73-5800 HPC Test Station EM P508 Validation Report (v1.2) - template.docx
 ...
