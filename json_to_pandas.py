@@ -26,6 +26,8 @@ class Export_test_rail:
                        7:"Pass w/Dev"}
         self.user_initial = self.create_user_initial()
         self.test_run_step_counter = 0
+        self.js = None
+        self.tc_js = None
 
         with open('config.yml') as f:
             self.config = yaml.safe_load(f)
@@ -146,7 +148,7 @@ class Export_test_rail:
 
     def tr_result_description(self, json_obj, row_idx, tc):
         test_result = []
-        test_result.append("Test case ID: C{}".format(tc))
+        test_result.append("Test case: C{} - {}".format(tc, self.tc_js["title"][3:]))
         test_result.append("Test Result ID: T{}\n".format(json_obj["test_id"]))
         test_result.append(self.extract_all_step_result(json_obj["custom_step_results"]))
         return "\n".join(test_result)
@@ -210,12 +212,15 @@ def main():
             ex.test_run_step_counter = 0
             df_orginal = None
             for test_case_id in tc_list:
+                url = "https://testrail.dwos.com/index.php?/api/v2/get_case/" + str(test_case_id)
+                ex.tc_js = ex.my_http_request(url, ex.USER, ex.PASSWORD)
+
                 url = "https://testrail.dwos.com//index.php?/api/v2/get_results_for_case/" + \
                       str(ex.config["test report run id"]) + "/" + str(test_case_id)
-                js = ex.my_http_request(url, ex.USER, ex.PASSWORD)
+                ex.js = ex.my_http_request(url, ex.USER, ex.PASSWORD)
                 try:
-                    js[0]
-                    js = ex.get_last_valid_result(js)
+                    ex.js[0]
+                    js = ex.get_last_valid_result(ex.js)
                     df = ex.create_df_from_json(js, ["Step", "Result Description", "Result", "Date", "Initial"],
                                              [ex.tr_step_num, ex.tr_result_description, ex.tr_result, ex.tr_date, ex.tr_initial], test_case_id)
                     df_orginal = pd.concat([df_orginal, df], ignore_index=True)
