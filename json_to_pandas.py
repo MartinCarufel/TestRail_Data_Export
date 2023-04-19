@@ -159,9 +159,6 @@ class Export_test_rail:
     def tc_expected_result(self, json_obj, row_idx, tc):
         return self.remove_picture_placeholder(self.get_expected_result(json_obj["custom_steps_separated"]))
 
-    def tc_step_desc(self, json_obj, row_idx, tc):
-        return self.remove_picture_placeholder(self.get_expected_result(json_obj["custom_steps_separated"]))
-
     def tc_test_method(self, json_obj, row_idx, tc):
         return "{} / {}".format(json_obj["custom_string_objective_evidence"], json_obj["custom_test_objev"])
 
