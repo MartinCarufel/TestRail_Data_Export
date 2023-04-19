@@ -74,6 +74,20 @@ class Export_test_rail:
 
         return "\n".join(expected_result)
 
+    def get_step_desc(self, data):
+        """
+        :param data: Is the content of the test case dict 'custom_steps_separated'
+        :return: String of all expected results
+        """
+        expected_result = []
+        for i in range(len(data)):
+            if i == len(data) - 1:  # prevent to add empty line at the end of the table
+                expected_result.append("Step {}: {}".format(str(i+1), data[i]["content"]))
+            else:
+                expected_result.append("Step {}: {}\n".format(str(i + 1), data[i]["content"]))
+
+        return "\n".join(expected_result)
+
     def extract_all_step_result(self, custom_step_result):
         """
         :param custom_step_result: Provide the content of the "get_results_for_case["custom_step_results"]" of
@@ -136,12 +150,16 @@ class Export_test_rail:
         return str(row_idx + 1)
 
     def tc_description(self, json_obj, row_idx, tc):
-        return "Test Case: C{}\n{}".format(str(json_obj["id"]), json_obj["title"][3:])
+        return "Test Case: C{}\n{}\n{}".format(str(json_obj["id"]), json_obj["title"][3:],
+                self.remove_picture_placeholder(self.get_step_desc(json_obj["custom_steps_separated"])))
 
     def tc_requirement(self, json_obj, row_idx, tc):
         return str(json_obj["custom_io_requirement"])
 
     def tc_expected_result(self, json_obj, row_idx, tc):
+        return self.remove_picture_placeholder(self.get_expected_result(json_obj["custom_steps_separated"]))
+
+    def tc_step_desc(self, json_obj, row_idx, tc):
         return self.remove_picture_placeholder(self.get_expected_result(json_obj["custom_steps_separated"]))
 
     def tc_test_method(self, json_obj, row_idx, tc):
