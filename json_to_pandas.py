@@ -15,7 +15,7 @@ class Export_test_rail:
 
 
         self.USER = 'martin.carufel@dental-wings.com'
-        self.PASSWORD = '18,Mac&Amo'
+        self.PASSWORD = "4AhW6wYp0fRy3NoDgz8k-8.QqVxbWx88Am5feuTn1"
 
         pd.set_option("display.max_columns", 5)
         self.status_text = {1:"Pass",
@@ -200,6 +200,14 @@ class Export_test_rail:
             tc_list.append(r.json()[tc]["id"])
         return tc_list
 
+    def read_docx_table_to_df(self, document, table_id):
+        table = document.tables[table_id]
+        data = [[cell.text for cell in row.cells] for row in table.rows]
+        df = pd.DataFrame(data)
+        df = df.rename(columns=df.iloc[0]).drop(df.index[0], axis=0).reset_index(drop=True)
+        return df
+
+
 def main():
     ex = Export_test_rail()
     user_initial = ex.create_user_initial()
@@ -237,5 +245,14 @@ def main():
             ex.write_to_doc_table(df, table_id, ex.config["template path"], ex.config["output doc name"])
 
 
-main()
+def test_read_table():
+    t = Export_test_rail()
+    document = Document(t.config["template path"])
+    df = t.read_docx_table_to_df(document, 5)
+    print(df)
+    # t.print_dataframe(df)
 
+if __name__ == "__main__":
+
+    main()
+    # test_read_table()
