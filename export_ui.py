@@ -6,7 +6,8 @@ from tkinter import messagebox
 from json_to_pandas import Export_test_rail
 import pandas as pd
 import yaml
-
+from docx.document import Document
+from docx import Document
 
 class Main_app(tk.Tk):
     def __init__(self):
@@ -202,6 +203,7 @@ class Main_app(tk.Tk):
 
     def create_report(self):
         print("Process test Report")
+        document = Document(self.ex.config["template path"])
         for tr_section_id, table_id in self.ex.config["table mapping"].items():
             tc_list = self.ex.get_tc_list_from_section(tr_section_id)
             self.ex.test_run_step_counter = 0
@@ -223,11 +225,13 @@ class Main_app(tk.Tk):
                     df_orginal = pd.concat([df_orginal, df], ignore_index=True)
                 except KeyError:
                     continue
-        self.ex.write_to_doc_table(df_orginal, table_id, self.ex.config["template path"],
-                                   self.ex.config["output doc name"])
+        # self.ex.write_to_doc_table(df_orginal, table_id, self.ex.config["template path"],
+        #                            self.ex.config["output doc name"])
+        self.ex.write_to_doc_table(df, table_id, document, self.ex.config["output doc name"])
         tk.messagebox.showinfo(title="Done", message="Export Completed")
 
     def create_specification(self):
+        document = Document(self.ex.config["template path"])
         for tr_section_id, table_id in self.ex.config["table mapping"].items():
             url = "https://testrail.dwos.com//index.php?/api/v2/get_cases/" + str(
                 self.ex.config["project id"]) + "&section_id=" + str(tr_section_id)
@@ -236,7 +240,8 @@ class Main_app(tk.Tk):
                                                   "Test Method / Objective Evidence"],
                                              [self.ex.step_num, self.ex.tc_description, self.ex.tc_requirement,
                                               self.ex.tc_expected_result, self.ex.tc_test_method])
-            self.ex.write_to_doc_table(df, table_id, self.ex.config["template path"], self.ex.config["output doc name"])
+            # self.ex.write_to_doc_table(df, table_id, self.ex.config["template path"], self.ex.config["output doc name"])
+            self.ex.write_to_doc_table(df, table_id, document, self.ex.config["output doc name"])
         tk.messagebox.showinfo(title="Done", message="Export Completed")
 
 
