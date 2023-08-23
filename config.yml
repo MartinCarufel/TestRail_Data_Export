@@ -1,7 +1,14 @@
 ---
 project id: 2
 test report: False
+<<<<<<< HEAD
 table mapping: {13575: 3, }
 test report run id: 0
 template path: D:/user_data/Martin/OneDrive - Straumann Group/Template/QUF73-2484 Template Test Specification (v1.3).docx
 output doc name: D:/user_data/Martin/OneDrive - Straumann Group/Temp/Window glue cure reduced time.docx
+=======
+table mapping: {13396: 2, 13397: 3, }
+test report run id: 0
+template path: C:/Users/mcarufel/OneDrive - STG-Business/Template/QUF63-5448 Template CSV Validation Specifications (v1.2).docx
+output doc name: C:/Users/mcarufel/OneDrive - STG-Business/Desktop/draft CSV Thermal Chamber.docx
+>>>>>>> 506d3aa40e33f561c31623a0546805f3b6087b0f

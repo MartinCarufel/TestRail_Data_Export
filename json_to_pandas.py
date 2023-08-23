@@ -109,7 +109,8 @@ class Export_test_rail:
 
 
     def write_to_doc_table(self, df, table_id, template_doc, output_doc):
-        d = Document(template_doc)
+        # d = Document(template_doc)
+        d = template_doc
         df_nb_row, df_nb_col = df.shape
         for df_row_idx in range(df_nb_row):
             table_row = df_row_idx + 1
