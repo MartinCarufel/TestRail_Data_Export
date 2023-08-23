@@ -22,20 +22,26 @@ class Main_app(tk.Tk):
         SEC_TBL = 7
         EXP_CLOSE = SEC_TBL+5
 
+        with open("config.yml") as f:
+            config = yaml.safe_load(f)  # load data in config.yml in a dict
+
         self.export_type_var = tk.BooleanVar()  # False --> Specification ; True --> Report
+        self.export_type_var.set(config["test report"])
         self.word_table_id_var = tk.IntVar()
         self.test_rail_id_var = tk.IntVar()
         self.table_section_text = tk.StringVar()
         self.template_path_var = tk.StringVar()
-        self.template_path_var.set("")
+        self.template_path_var.set(config["template path"])
         self.output_file_path_var = tk.StringVar()
-        self.output_file_path_var.set("")
+        self.output_file_path_var.set(config["output doc name"])
         self.project_id_var = tk.IntVar()
+        self.project_id_var.set(config["project id"])
         self.test_report_run_id_var = tk.IntVar()
 
         self.table_map = {}
 
         self.geometry("860x440")
+        self.wm_minsize(width=860, height=440)
 
         self.section_frame = tk.LabelFrame(self, width=500, height=100, bd=3, relief="sunken")
         self.section_frame.grid(column=1, pady=0, row=SEC_TBL+4, columnspan=3, sticky=tk.W)
