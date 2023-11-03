@@ -1,1 +1,2 @@
-python export_ui.py
+py export_ui.py
+pause

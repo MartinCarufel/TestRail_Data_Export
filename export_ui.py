@@ -128,7 +128,6 @@ class Main_app(tk.Tk):
                 self.existing_config = yaml.safe_load(f)  # load data in config.yml in a dict
                 print(self.existing_config)
                 if len(self.existing_config) > 0:
-                    print("tata")
                     for key, value in cc.items():
                         value.set(self.existing_config[key])
                         # self.project_id_var.set(self.existing_config["project id"])
