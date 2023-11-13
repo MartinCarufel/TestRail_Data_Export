@@ -96,15 +96,16 @@ class Export_test_rail:
         a valid result
         :return:
         """
-        regex_patern = '!\\[\\]\\(index\\.php\\?/attachments/get/\\d+\\) *\n*'
+        regex_patern = '\\[\\]\\(index\\.php\\?/attachments/get/\\d+\\) *\n*'
         steps_results = []
 
         for actual_result_idx in range(len(custom_step_result)):
             if custom_step_result[actual_result_idx]["actual"] != "":
                 steps_results.append("Step {}: ".format(actual_result_idx + 1))
-                filtered_string = re.subn(regex_patern, "", self.remove_picture_placeholder(
-                    custom_step_result[actual_result_idx]["actual"]))
-                steps_results.append(filtered_string[0])
+                # filtered_string = re.subn(regex_patern, "", self.remove_picture_placeholder(
+                #     custom_step_result[actual_result_idx]["actual"]))
+                # steps_results.append(filtered_string[0])
+                steps_results.append(custom_step_result[actual_result_idx]["actual"])
         return "\n".join(steps_results)
 
 
@@ -138,7 +139,6 @@ class Export_test_rail:
             for col_idx in range(len(col_list)):
                 row_data.append(col_content[col_idx](json_obj[row_idx], row_idx, tc))
             df.loc[row_idx] = row_data
-        # print(df)
         return df
 
 
@@ -265,7 +265,6 @@ def test_read_table():
     t = Export_test_rail()
     document = Document(t.config["template path"])
     df = t.read_docx_table_to_df(document, 5)
-    print(df)
     # t.print_dataframe(df)
 
 if __name__ == "__main__":

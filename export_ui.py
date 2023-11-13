@@ -228,11 +228,11 @@ class Main_app(tk.Tk):
                                                       self.ex.tr_result, self.ex.tr_date,
                                                       self.ex.tr_initial], test_case_id)
                     df_orginal = pd.concat([df_orginal, df], ignore_index=True)
-                except KeyError:
+                except:
                     continue
         # self.ex.write_to_doc_table(df_orginal, table_id, self.ex.config["template path"],
         #                            self.ex.config["output doc name"])
-        self.ex.write_to_doc_table(df, table_id, document, self.ex.config["output doc name"])
+            self.ex.write_to_doc_table(df_orginal, table_id, document, self.ex.config["output doc name"])
         tk.messagebox.showinfo(title="Done", message="Export Completed")
 
     def create_specification(self):
