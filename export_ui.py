@@ -8,6 +8,7 @@ import pandas as pd
 import yaml
 from docx.document import Document
 from docx import Document
+import os
 
 class Main_app(tk.Tk):
     def __init__(self):
@@ -22,6 +23,20 @@ class Main_app(tk.Tk):
         OUT = 5
         SEC_TBL = 7
         EXP_CLOSE = SEC_TBL+5
+
+        if not os.path.isfile("./config.yml"):
+
+            with open("config.yml", 'w') as f:
+                f.writelines("---\n")
+                f.writelines("project id: 2\n")
+                f.writelines("test report: False\n")
+                f.writelines("table mapping: {}\n")
+                f.writelines("test report run id:\n")
+                f.writelines("template path:\n")
+                f.writelines("output doc name:\n")
+
+
+
 
         with open("config.yml") as f:
             config = yaml.safe_load(f)  # load data in config.yml in a dict
