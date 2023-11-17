@@ -100,12 +100,12 @@ class Export_test_rail:
         steps_results = []
 
         for actual_result_idx in range(len(custom_step_result)):
-            if custom_step_result[actual_result_idx]["actual"] != "":
-                steps_results.append("Step {}: ".format(actual_result_idx + 1))
-                filtered_string = re.subn(regex_patern, "", self.remove_picture_placeholder(
-                    custom_step_result[actual_result_idx]["actual"]))
-                steps_results.append(filtered_string[0])
-                # steps_results.append(custom_step_result[actual_result_idx]["actual"])
+            # if custom_step_result[actual_result_idx]["actual"] != "":
+            steps_results.append("Step {}: ".format(actual_result_idx + 1) + self.status_text[custom_step_result[actual_result_idx]['status_id']])
+            filtered_string = re.subn(regex_patern, "", self.remove_picture_placeholder(
+                custom_step_result[actual_result_idx]["actual"]))
+            steps_results.append(filtered_string[0])
+            # steps_results.append(custom_step_result[actual_result_idx]["actual"])
         return "\n".join(steps_results)
 
 
@@ -139,6 +139,7 @@ class Export_test_rail:
             for col_idx in range(len(col_list)):
                 row_data.append(col_content[col_idx](json_obj[row_idx], row_idx, tc))
             df.loc[row_idx] = row_data
+
         return df
 
 
@@ -160,6 +161,7 @@ class Export_test_rail:
 
     def tr_step_num(self, json_obj, row_idx, tc):
         self.test_run_step_counter += 1
+        # print(self.test_run_step_counter)
         return self.test_run_step_counter
 
     def tr_result_description(self, json_obj, row_idx, tc):

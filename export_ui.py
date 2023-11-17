@@ -141,7 +141,6 @@ class Main_app(tk.Tk):
         try:
             with open("config.yml") as f:
                 self.existing_config = yaml.safe_load(f)  # load data in config.yml in a dict
-                print(self.existing_config)
                 if len(self.existing_config) > 0:
                     for key, value in cc.items():
                         value.set(self.existing_config[key])
@@ -150,10 +149,10 @@ class Main_app(tk.Tk):
             print(e)
 
     def validate(self):
-        print(self.export_type_var.get())
-        print(self.template_path_var.get())
-        print(self.output_file_path_var.get())
-        print(self.table_map)
+        # print(self.export_type_var.get())
+        # print(self.template_path_var.get())
+        # print(self.output_file_path_var.get())
+        # print(self.table_map)
         if len(self.table_map) > 0:
             with open("config.yml", mode='w') as f:
                 f.writelines("---\n")
@@ -213,21 +212,25 @@ class Main_app(tk.Tk):
         else:
             path = filedialog.asksaveasfilename(initialdir=kwargs["initialdir"], filetypes=kwargs["filetypes"],
                                                 defaultextension=kwargs["defaultextension"])
-        print(path)
         var.set(path)
 
     def browse_folder(self, var):
         path = filedialog.askdirectory()
-        print(path)
         var.set(path)
 
     def create_report(self):
         print("Process test Report")
-        document = Document(self.ex.config["template path"])
+        try:
+            document = Document(self.ex.config["template path"])
+        except:
+            tk.messagebox.showerror(title="Permission Error", message="Unable to open the template file\n{}\n\n"
+                                                                      "The file may be already open\nClose the file and export again"
+                                    .format(self.ex.config["template path"]))
+
         for tr_section_id, table_id in self.ex.config["table mapping"].items():
             tc_list = self.ex.get_tc_list_from_section(tr_section_id)
             self.ex.test_run_step_counter = 0
-            df_orginal = None
+            df_orginal = pd.DataFrame()
             for test_case_id in tc_list:
                 url = "https://testrail.dwos.com/index.php?/api/v2/get_case/" + str(test_case_id)
                 self.ex.tc_js = self.ex.my_http_request(url, self.ex.USER, self.ex.PASSWORD)
@@ -244,11 +247,22 @@ class Main_app(tk.Tk):
                                                       self.ex.tr_initial], test_case_id)
                     df_orginal = pd.concat([df_orginal, df], ignore_index=True)
                 except:
+                    row = pd.DataFrame([[self.ex.tr_step_num("", "", ""), "Test case: C{} - {}\nNot performed".format(test_case_id,
+                                                                self.ex.tc_js["title"][3:]), "-", "-", "-"]],
+                                       columns=["Step", "Result Description", "Result", "Date", "Initial"])
+
+                    df_orginal = pd.concat([df_orginal, row], ignore_index=True)
+
+
                     continue
-        # self.ex.write_to_doc_table(df_orginal, table_id, self.ex.config["template path"],
-        #                            self.ex.config["output doc name"])
-            self.ex.write_to_doc_table(df_orginal, table_id, document, self.ex.config["output doc name"])
-        tk.messagebox.showinfo(title="Done", message="Export Completed")
+            try:
+                self.ex.write_to_doc_table(df_orginal, table_id, document, self.ex.config["output doc name"])
+                tk.messagebox.showinfo(title="Done", message="Export Completed")
+            except PermissionError:
+                tk.messagebox.showerror(title="Permission Error", message="Unable to save the file\n{}\n\n"
+                                        "The file may be already open\nClose the file and export again"
+                                        .format(self.ex.config["output doc name"]))
+
 
     def create_specification(self):
         document = Document(self.ex.config["template path"])
