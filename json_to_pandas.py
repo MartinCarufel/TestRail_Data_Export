@@ -59,7 +59,7 @@ class Export_test_rail:
 
     def remove_picture_placeholder(self, input_text):
         regex_patern = '!\\[\\]\\(index\\.php\\?/attachments/get/\\d+\\) *\n*'
-        output_text = re.subn(regex_patern, "", input_text)
+        output_text = re.subn(regex_patern, "PictureHere\n", input_text)
         return output_text[0]
 
     def get_expected_result(self, data):
@@ -102,10 +102,10 @@ class Export_test_rail:
         for actual_result_idx in range(len(custom_step_result)):
             if custom_step_result[actual_result_idx]["actual"] != "":
                 steps_results.append("Step {}: ".format(actual_result_idx + 1))
-                # filtered_string = re.subn(regex_patern, "", self.remove_picture_placeholder(
-                #     custom_step_result[actual_result_idx]["actual"]))
-                # steps_results.append(filtered_string[0])
-                steps_results.append(custom_step_result[actual_result_idx]["actual"])
+                filtered_string = re.subn(regex_patern, "", self.remove_picture_placeholder(
+                    custom_step_result[actual_result_idx]["actual"]))
+                steps_results.append(filtered_string[0])
+                # steps_results.append(custom_step_result[actual_result_idx]["actual"])
         return "\n".join(steps_results)
 
 
