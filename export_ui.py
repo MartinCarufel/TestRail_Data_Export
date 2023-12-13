@@ -159,7 +159,10 @@ class Main_app(tk.Tk):
                 f.writelines("project id: " + str(self.project_id_var.get()) + "\n")
                 f.writelines("test report: " + str(self.export_type_var.get()) + "\n")
                 f.writelines(self.create_yml_dict(self.table_map, "table mapping") + "\n")
-                f.writelines("test report run id: " + str(self.test_report_run_id_var.get()) + "\n")
+                try:
+                    f.writelines("test report run id: " + str(self.test_report_run_id_var.get()) + "\n")
+                except:
+                    f.writelines("test report run id: " + "0" + "\n")
                 f.writelines("template path: " + self.template_path_var.get() + "\n")
                 f.writelines("output doc name: " + self.output_file_path_var.get() + "\n")
 
